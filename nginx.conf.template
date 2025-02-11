@@ -14,15 +14,13 @@ http {
     keepalive_timeout 65;
 
     server {
-        # Listen on the port provided by Render via the $PORT environment variable.
+        # This line will become something like "listen 10000;" after substitution.
         listen       ${PORT};
         server_name  localhost;
 
-        # Hide Nginx version details (optional)
         server_tokens off;
 
         location / {
-            # Proxy requests to Uvicorn running on localhost:8000
             proxy_pass http://127.0.0.1:8000;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
@@ -30,7 +28,7 @@ http {
             proxy_set_header X-Forwarded-Proto $scheme;
         }
 
-        # Ensure the Server header is set to "nginx"
+        # Set the Server header to "nginx"
         add_header Server "nginx" always;
     }
 }
