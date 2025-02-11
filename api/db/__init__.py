@@ -1,1 +1,1 @@
-from .schemas import Book, InMemoryDB
+from .schemas import Book, db

@@ -76,11 +76,19 @@ class InMemoryDB:
         self.books.update({book_id: data})
         return self.books.get(book_id)
 
-    def delete_book(self, book_id: int) -> None:
-        """Deletes a specific book from database.
+    def delete_book(self, book_id: int) -> bool:
+        """Deletes a specific book from the database.
 
         Args:
             book_id (int): Book ID.
+
+        Returns:
+            bool: True if deleted, False if not found.
         """
         if book_id in self.books:
             del self.books[book_id]
+            return True  # ✅ Indicate successful deletion
+        return False  # ✅ Book was not found
+
+
+db = InMemoryDB()

@@ -5,16 +5,6 @@ def test_get_all_books():
     response = client.get("/books/")
     assert response.status_code == 200
     assert len(response.json()) == 3
-
-
-def test_get_single_book():
-    response = client.get("/books/1")
-    assert response.status_code == 200
-    data = response.json()
-    assert data["title"] == "The Hobbit"
-    assert data["author"] == "J.R.R. Tolkien"
-
-
 def test_create_book():
     new_book = {
         "id": 4,
@@ -44,9 +34,23 @@ def test_update_book():
     assert data["title"] == "The Hobbit: An Unexpected Journey"
 
 
+
+def test_get_single_book():
+    response = client.get("/books/1")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["title"] == "The Hobbit"
+    assert data["author"] == "J.R.R. Tolkien"
+
+
+
 def test_delete_book():
+    print("Before deletion:", client.get("/books/3").json()) 
+
     response = client.delete("/books/3")
     assert response.status_code == 204
 
     response = client.get("/books/3")
+    print("After deletion:", response.json())  
+
     assert response.status_code == 404
