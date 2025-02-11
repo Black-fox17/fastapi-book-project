@@ -16,7 +16,7 @@ COPY . /app
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copy the Nginx configuration template into the container.
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf.template /etc/nginx/nginx.conf.template
 
 # Copy the entrypoint script and ensure it is executable.
 COPY entrypoint.sh /entrypoint.sh
