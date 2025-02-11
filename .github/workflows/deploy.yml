@@ -17,7 +17,7 @@ jobs:
         run: |
           # SSH into the server and deploy updates
           ssh -o StrictHostKeyChecking=no user@your-server-ip <<EOF
-            cd /path/to/your/project
+            cd /
             git pull origin main
             systemctl restart fastapi-app.service
           EOF
