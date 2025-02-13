@@ -9,7 +9,7 @@ api_router.include_router(books.router, prefix="/books", tags=["books"])
 # Initialize some sample books
 sample_books = [
     Book(id=1, title="The Hobbit", author="J.R.R. Tolkien", 
-         publication_year=1937, genre="Fantasy"),  
+         publication_year=1937, genre="Science Fiction"),  
 ]
 for book in sample_books:
     db.add_book(book)
