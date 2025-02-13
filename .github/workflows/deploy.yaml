@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy FastAPI to Azure
 
 on:
   push:
@@ -8,28 +8,17 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: SSH into Azure & Deploy
+        uses: appleboy/ssh-action@v0.1.6
         with:
-          python-version: '3.12'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Run tests
-        run: |
-          pytest --maxfail=1 --disable-warnings -q
-
-      - name: Trigger Render Deployment
-        run: |
-          curl -X POST "https://api.render.com/deploy/srv/${{ secrets.RENDER_SERVICE_ID }}/deploy" \
-            -H "Accept: application/json" \
-            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-            -d '{"clearCache": false}'
+          host: ${{ secrets.AZURE_HOST }}
+          username: azureuser
+          key: ${{ secrets.AZURE_KEY }}
+          script: |
+            cd fastapi-book-project
+            git pull origin main
+            source venv/bin/activate
+            pip install -r requirements.txt
+            sudo systemctl restart nginx
+            gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8000 --daemon
