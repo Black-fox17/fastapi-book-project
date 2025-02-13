@@ -14,7 +14,8 @@ jobs:
         with:
           host: ${{ secrets.AZURE_HOST }}
           username: azureuser
-          key: ${{ secrets.AZURE_KEY }}
+          key: |
+            ${{ secrets.AZURE_KEY }}
           script: |
             cd fastapi-book-project
             git pull origin main
